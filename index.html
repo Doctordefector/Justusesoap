@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just Use Soap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">Just Use Soap</div>
+        <ul>
+            <li><a href="#profile">Profile</a></li>
+            <li><a href="goals.html">Goals</a></li>
+            <li><a href="checklists.html">Checklists</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <h1>Clean Living Starts Here</h1>
+        <p>Simple. Effective. Just Use Soap.</p>
+    </header>
+
+    <main>
+        <section id="profile" class="profile-section">
+            <div class="profile-container">
+                <h2>Profile Overview</h2>
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <div class="card-header">
+                            <i class="fas fa-bullseye"></i>
+                            <h3>Active Goals</h3>
+                        </div>
+                        <div id="goals-overview" class="card-content">
+                            <!-- Goals will be dynamically added here -->
+                        </div>
+                        <a href="goals.html" class="view-all">
+                            View All Goals <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <div class="overview-card">
+                        <div class="card-header">
+                            <i class="fas fa-list-check"></i>
+                            <h3>Active Checklists</h3>
+                        </div>
+                        <div id="checklists-overview" class="card-content">
+                            <!-- Checklists will be dynamically added here -->
+                        </div>
+                        <a href="checklists.html" class="view-all">
+                            View All Checklists <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="contact-container">
+                <h2>Get in Touch</h2>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope-open-text"></i>
+                    </div>
+                    <a href="mailto:chapliukjr@gmail.com" class="email-link">
+                        chapliukjr@gmail.com
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>A project made for GLOBAL IGCSE</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

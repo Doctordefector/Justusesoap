@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklists - Just Use Soap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">Just Use Soap</div>
+        <ul>
+            <li><a href="index.html#profile">Profile</a></li>
+            <li><a href="index.html#goals">Goals</a></li>
+            <li><a href="checklists.html">Checklists</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="checklists" class="checklist-page">
+            <div class="checklist-header">
+                <h1>Overview</h1>
+                <button id="add-reminder" class="btn-primary animate-button">Add Reminder</button>
+            </div>
+
+            <div class="checklist-tabs">
+                <button class="tab-btn active" data-tab="active">Active Checklists</button>
+                <button class="tab-btn" data-tab="past">Past Checklists</button>
+            </div>
+
+            <!-- Add Reminder Modal -->
+            <div id="reminder-modal" class="modal">
+                <div class="modal-content">
+                    <div class="success-animation" id="success-animation">
+                        <div class="checkmark-circle">
+                            <div class="checkmark draw"></div>
+                        </div>
+                    </div>
+                    <h3>Create New Reminder</h3>
+                    <form id="reminder-form">
+                        <div class="form-group">
+                            <label for="task-name">Task Name:</label>
+                            <input type="text" id="task-name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="frequency">Times per day:</label>
+                            <input type="number" id="frequency" min="1" max="10" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="start-date">Start Date:</label>
+                            <input type="date" id="start-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="end-date">End Date:</label>
+                            <input type="date" id="end-date" required>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="cancel-reminder">Cancel</button>
+                            <button type="submit" class="btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="checklist-content">
+                <div id="active-checklists" class="tab-content active">
+                    <div id="checklist-container"></div>
+                </div>
+                
+                <div id="past-checklists" class="tab-content">
+                    <div id="past-checklist-container"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="checklist.js"></script>
+</body>
+</html> 

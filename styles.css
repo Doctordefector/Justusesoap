@@ -1,0 +1,1104 @@
+:root {
+    --primary-green: #80ff80;
+    --white: #ffffff;
+    --dark: #333333;
+    --light-green: #e6ffe6;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: var(--white);
+    line-height: 1.6;
+    color: var(--dark);
+    padding-top: 60px;
+}
+
+/* Enhanced Navigation */
+nav {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 1.2rem 5%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    left: 0;
+    right: 0;
+    background: white;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2a9d2a;
+    position: relative;
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.5px;
+    transition: color 0.3s ease;
+}
+
+.logo:hover {
+    color: var(--primary-green);
+}
+
+/* Remove or comment out this entire block to remove the green dot */
+/* .logo::after {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--primary-green);
+    border-radius: 50%;
+    bottom: 5px;
+    right: -12px;
+} */
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 3rem;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--primary-green);
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Enhanced Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: var(--dark);
+    text-align: center;
+    padding: 8rem 2rem 6rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+    margin-top: -60px;
+    padding-top: calc(60px + 4rem);
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+}
+
+.hero h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    color: #2a9d2a;
+    font-family: 'Inter', sans-serif;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+.hero p {
+    font-size: 1.4rem;
+    color: #2a9d2a;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+}
+
+/* Main Content Sections */
+section {
+    padding: 4rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+section p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 800px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav {
+        padding: 1rem;
+    }
+    
+    nav ul {
+        gap: 1.5rem;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero {
+        padding: 6rem 1rem 4rem;
+    }
+}
+
+/* Add these new styles to your existing CSS */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 500px;
+    margin: 50px auto;
+    position: relative;
+}
+
+.btn-primary {
+    background-color: var(--primary-green);
+    color: var(--dark);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #66cc66;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: var(--dark);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.active-checklists {
+    margin-top: 2rem;
+}
+
+#checklist-container {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.checklist-item {
+    background-color: var(--light-green);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+    gap: 1rem;
+}
+
+.checklist-item > div {
+    flex: 1;
+}
+
+/* Animated Button */
+.animate-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.animate-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.animate-button:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+/* Checklist Circle Animation */
+.checklist-circle {
+    width: 30px;
+    height: 30px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.checklist-circle.filling {
+    position: relative;
+    overflow: hidden;
+}
+
+.checklist-circle.filling::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    right: -100%;
+    background-color: var(--primary-green);
+    height: var(--fill-percent, 0%);
+    transition: height 0.8s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    animation: liquidWave 2s infinite ease-in-out;
+    transform-origin: center bottom;
+}
+
+.checklist-circle.filling::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -100%;
+    right: -100%;
+    background-color: var(--primary-green);
+    height: calc(var(--fill-percent, 0%) - 4px);
+    opacity: 0.3;
+    animation: liquidWave 2s infinite ease-in-out 0.5s;
+    transform-origin: center bottom;
+}
+
+@keyframes liquidWave {
+    0% {
+        transform: translateX(-10%) scaleY(1);
+        border-radius: 50% 45% 45% 50%;
+    }
+    50% {
+        transform: translateX(10%) scaleY(1.05);
+        border-radius: 45% 50% 50% 45%;
+    }
+    100% {
+        transform: translateX(-10%) scaleY(1);
+        border-radius: 50% 45% 45% 50%;
+    }
+}
+
+.checklist-circle.completed {
+    background: var(--primary-green);
+    border-color: var(--primary-green);
+}
+
+.checklist-circle.completed::after {
+    content: '✓';
+    position: absolute;
+    color: white;
+    font-size: 16px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: none;
+    background: none;
+    opacity: 1;
+}
+
+/* Success Animation */
+.success-animation {
+    display: none;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.checkmark-circle {
+    width: 50px;
+    height: 50px;
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.checkmark {
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: var(--primary-green);
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px var(--primary-green);
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark.draw {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke: var(--primary-green);
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px var(--primary-green);
+    }
+}
+
+.checklist-page {
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.checklist-header {
+    margin-bottom: 2rem;
+}
+
+.checklist-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+#checklist-container {
+    display: grid;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.checklist-item {
+    background-color: var(--light-green);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.checklist-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Delete button styles */
+.delete-btn {
+    color: #ff4444;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 12px;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.delete-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.delete-btn i {
+    pointer-events: none;
+}
+
+/* Goals Page Styles */
+.goals-page {
+    padding: 4rem 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.goals-header {
+    margin-bottom: 2rem;
+}
+
+.goals-header h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dark);
+}
+
+.goals-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.tab-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-green);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.tab-btn.active {
+    color: var(--primary-green);
+}
+
+.tab-btn.active::after {
+    transform: scaleX(1);
+}
+
+.tab-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+    opacity: 1;
+}
+
+.checklist-tabs {
+    display: flex;
+    gap: 1rem;
+    margin: 2rem 0;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.tab-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    background: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-green);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.tab-btn.active {
+    color: var(--primary-green);
+}
+
+.tab-btn.active::after {
+    transform: scaleX(1);
+}
+
+.tab-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+    opacity: 1;
+}
+
+.checklist-item.past {
+    opacity: 0.8;
+    background-color: #f5f5f5;
+}
+
+.completion-status {
+    margin-top: 0.5rem;
+    font-weight: 500;
+    color: var(--dark);
+}
+
+.no-items {
+    text-align: center;
+    color: #666;
+    margin-top: 2rem;
+}
+
+/* Add to your existing styles */
+
+.goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.goal-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.goal-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.goal-type {
+    font-size: 0.9rem;
+    color: var(--primary-green);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+}
+
+.goal-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.goal-progress {
+    margin: 1rem 0;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary-green);
+    transition: width 0.3s ease;
+}
+
+.goal-values {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.goal-notes {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+.update-value {
+    background: none;
+    border: none;
+    color: var(--primary-green);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    transition: opacity 0.3s ease;
+}
+
+.update-value:hover {
+    opacity: 0.8;
+}
+
+.goal-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.goal-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--light-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+}
+
+.goal-icon i {
+    font-size: 1.2rem;
+    color: var(--primary-green);
+}
+
+/* Update goal type styles */
+.goal-type {
+    font-size: 0.9rem;
+    color: var(--primary-green);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Custom icons for specific goal types */
+.goal-icon[data-type="weight"] i {
+    font-size: 1.4rem;
+}
+
+.goal-icon[data-type="hair"] i {
+    font-size: 1.3rem;
+}
+
+.goal-icon[data-type="skin"] i {
+    font-size: 1.1rem;
+}
+
+/* Add to your existing styles */
+
+.goal-card.completed {
+    background: #f8fff8;
+    border: 1px solid var(--primary-green);
+}
+
+.goal-icon.completed {
+    position: relative;
+}
+
+.check-mark {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    color: var(--primary-green);
+    background: white;
+    border-radius: 50%;
+    padding: 2px;
+    font-size: 0.8rem;
+}
+
+.delete-goal {
+    background: none;
+    border: none;
+    color: #ff4444;
+    cursor: pointer;
+    padding: 8px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    margin-left: auto;
+}
+
+.delete-goal:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.goal-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+/* Animation for completion */
+@keyframes completionPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.goal-card.completed .goal-icon {
+    animation: completionPulse 0.5s ease-in-out;
+}
+
+/* Past goals tab styling */
+#past-goals .goal-card {
+    opacity: 0.8;
+}
+
+#past-goals .goal-card:hover {
+    opacity: 1;
+}
+
+/* Add to your existing styles */
+
+#contact {
+    padding: 4rem 5%;
+    background-color: var(--light-green);
+    text-align: center;
+}
+
+.contact-content {
+    margin: 2rem 0;
+}
+
+.email-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 1.2rem;
+    padding: 1rem 2rem;
+    background: white;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.email-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+footer {
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Update contact section styles */
+.contact-section {
+    padding: 4rem 5%;
+    background: linear-gradient(135deg, var(--light-green) 0%, #e8f5e9 100%);
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-container {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.contact-container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--dark);
+    position: relative;
+    display: inline-block;
+}
+
+.contact-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 3px;
+    background: var(--primary-green);
+    border-radius: 2px;
+}
+
+.contact-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    transform: translateY(0);
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.contact-icon {
+    font-size: 2.5rem;
+    color: var(--primary-green);
+    margin-bottom: 1rem;
+}
+
+.email-link {
+    color: var(--dark);
+    text-decoration: none;
+    font-size: 1.2rem;
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.email-link:hover {
+    color: var(--primary-green);
+    transform: scale(1.05);
+}
+
+footer {
+    background: var(--dark);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+footer p {
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Add animation for contact icon */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.contact-icon i {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Add hover effect for email link */
+.email-link::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: var(--primary-green);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+.email-link:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Add Profile Section Styles */
+.profile-section {
+    padding: 4rem 5%;
+    background: white;
+}
+
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.profile-container h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--dark);
+    position: relative;
+}
+
+.profile-container h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--primary-green);
+    border-radius: 2px;
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.overview-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.overview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--light-green);
+}
+
+.card-header i {
+    font-size: 1.5rem;
+    color: var(--primary-green);
+    margin-right: 1rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    color: var(--dark);
+    font-size: 1.2rem;
+}
+
+.card-content {
+    min-height: 200px;
+    margin-bottom: 1rem;
+}
+
+.view-all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--primary-green);
+    font-weight: 500;
+    padding: 0.8rem;
+    border-radius: 8px;
+    background: var(--light-green);
+    transition: all 0.3s ease;
+}
+
+.view-all i {
+    margin-left: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.view-all:hover {
+    background: #d4f5d4;
+}
+
+.view-all:hover i {
+    transform: translateX(5px);
+}
+
+/* Add responsive design */
+@media (max-width: 768px) {
+    .overview-grid {
+        grid-template-columns: 1fr;
+    }
+}
