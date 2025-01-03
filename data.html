@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Data - Just Use Soap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">Just Use Soap</div>
+        <ul>
+            <li><a href="index.html#profile">Profile</a></li>
+            <li><a href="goals.html">Goals</a></li>
+            <li><a href="checklists.html">Checklists</a></li>
+            <li><a href="data.html">My Data</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="data-section">
+            <div class="data-container">
+                <h1>My Data</h1>
+                <div class="data-actions">
+                    <div class="action-card">
+                        <h3><i class="fas fa-download"></i> Export Data</h3>
+                        <p>Download all your goals and checklists as a text file.</p>
+                        <button id="export-btn" class="btn-primary">Export Data</button>
+                    </div>
+                    
+                    <div class="action-card">
+                        <h3><i class="fas fa-upload"></i> Import Data</h3>
+                        <p>Import your previously exported data file.</p>
+                        <input type="file" id="import-input" accept=".txt" style="display: none;">
+                        <button id="import-btn" class="btn-primary">Import Data</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="data.js"></script>
+</body>
+</html> 

@@ -1,10 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Clear any test goals if they exist
-    if (!localStorage.getItem('goalsInitialized')) {
-        localStorage.setItem('persistentGoals', JSON.stringify([]));
-        localStorage.setItem('goalsInitialized', 'true');
-    }
-
     // Update goals overview
     const goals = JSON.parse(localStorage.getItem('persistentGoals')) || [];
     const goalsOverview = document.getElementById('goals-overview');
@@ -33,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Update checklists overview
-    const checklists = JSON.parse(localStorage.getItem('activeChecklists')) || [];
+    const checklists = JSON.parse(localStorage.getItem('checklists')) || [];
     const checklistsOverview = document.getElementById('checklists-overview');
     
     if (checklistsOverview) {
@@ -41,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             checklistsOverview.innerHTML = '<p class="empty-message">No active checklists</p>';
         } else {
             checklistsOverview.innerHTML = checklists
+                .filter(checklist => !checklist.completed)
                 .slice(0, 3)
                 .map(checklist => `
                     <div class="overview-item">
