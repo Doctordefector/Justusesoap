@@ -11,11 +11,12 @@
 </head>
 <body>
     <nav>
-        <div class="logo">Just Use Soap</div>
+        <a href="index.html" class="logo">Just Use Soap</a>
         <ul>
             <li><a href="index.html#profile">Profile</a></li>
             <li><a href="goals.html">Goals</a></li>
             <li><a href="checklists.html">Checklists</a></li>
+            <li><a href="data.html">My Data</a></li>
         </ul>
     </nav>
 
@@ -23,60 +24,20 @@
         <section id="goals" class="goals-page">
             <div class="goals-header">
                 <h1>Goals</h1>
-                <button id="add-goal" class="btn-primary animate-button">Add Goal</button>
+                <button id="add-goal" class="btn-primary animate-button">
+                    <i class="fas fa-plus"></i> Add Goal
+                </button>
             </div>
             
             <div class="goals-tabs">
-                <button class="tab-btn active" data-tab="current">Current Goals</button>
-                <button class="tab-btn" data-tab="past">Past Goals</button>
-            </div>
-
-            <!-- Add Goal Modal -->
-            <div id="goal-modal" class="modal">
-                <div class="modal-content">
-                    <h3>Create New Goal</h3>
-                    <form id="goal-form">
-                        <div class="form-group">
-                            <label for="goal-type">Goal Type:</label>
-                            <select id="goal-type" required>
-                                <option value="weight">Weight Goal</option>
-                                <option value="skin">Skin Care</option>
-                                <option value="hair">Hair Growth</option>
-                                <option value="custom">Custom Goal</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="goal-title">Goal Title:</label>
-                            <input type="text" id="goal-title" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="current-value">Current Value:</label>
-                            <input type="number" id="current-value" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="target-value">Target Value:</label>
-                            <input type="number" id="target-value" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="unit">Unit:</label>
-                            <input type="text" id="unit" placeholder="kg, cm, etc." required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="goal-notes">Notes:</label>
-                            <textarea id="goal-notes" rows="3"></textarea>
-                        </div>
-                        
-                        <div class="form-actions">
-                            <button type="button" class="btn-secondary" id="cancel-goal">Cancel</button>
-                            <button type="submit" class="btn-primary">Create Goal</button>
-                        </div>
-                    </form>
-                </div>
+                <button class="tab-btn active" data-tab="current">
+                    <i class="fas fa-bullseye"></i>
+                    Current Goals
+                </button>
+                <button class="tab-btn" data-tab="past">
+                    <i class="fas fa-trophy"></i>
+                    Past Goals
+                </button>
             </div>
 
             <div class="goals-content">
@@ -93,6 +54,61 @@
                 </div>
             </div>
         </section>
+
+        <!-- Add Goal Modal -->
+        <div id="goal-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Create New Goal</h3>
+                    <button class="close-modal" id="close-modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="goal-form">
+                    <div class="form-group">
+                        <label for="goal-type">Goal Type</label>
+                        <select id="goal-type" required>
+                            <option value="weight">Weight Goal</option>
+                            <option value="skin">Skin Care</option>
+                            <option value="hair">Hair Growth</option>
+                            <option value="custom">Custom Goal</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goal-title">Goal Title</label>
+                        <input type="text" id="goal-title" placeholder="Enter your goal title" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="current-value">Current Value</label>
+                            <input type="number" id="current-value" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="target-value">Target Value</label>
+                            <input type="number" id="target-value" step="0.01" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="unit">Unit</label>
+                            <input type="text" id="unit" placeholder="kg, cm, etc." required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="notes">Notes (Optional)</label>
+                        <textarea id="notes" rows="3" placeholder="Add any additional notes about your goal"></textarea>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancel-goal">Cancel</button>
+                        <button type="submit" class="btn-primary">Create Goal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
     <script src="goals.js"></script>
