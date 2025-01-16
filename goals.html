@@ -38,6 +38,10 @@
                     <i class="fas fa-trophy"></i>
                     Past Goals
                 </button>
+                <button class="tab-btn" data-tab="calendar">
+                    <i class="fas fa-calendar-alt"></i>
+                    Calendar
+                </button>
             </div>
 
             <div class="goals-content">
@@ -50,6 +54,32 @@
                 <div id="past-goals" class="tab-content">
                     <div id="past-goals-container" class="goals-grid">
                         <!-- Past goals will be displayed here -->
+                    </div>
+                </div>
+
+                <div id="calendar-goals" class="tab-content">
+                    <div class="calendar-controls">
+                        <button class="btn-secondary" id="prev-month">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h2 id="calendar-month">Month Year</h2>
+                        <button class="btn-secondary" id="next-month">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-header">
+                            <div>Sun</div>
+                            <div>Mon</div>
+                            <div>Tue</div>
+                            <div>Wed</div>
+                            <div>Thu</div>
+                            <div>Fri</div>
+                            <div>Sat</div>
+                        </div>
+                        <div id="calendar-days" class="calendar-days">
+                            <!-- Calendar days will be generated here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -105,6 +135,43 @@
                     <div class="form-actions">
                         <button type="button" class="btn-secondary" id="cancel-goal">Cancel</button>
                         <button type="submit" class="btn-primary">Create Goal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Progress Modal -->
+        <div id="progress-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add Progress for <span id="selected-date"></span></h3>
+                    <button class="close-modal" id="close-progress-modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="progress-form">
+                    <div class="form-group">
+                        <label for="progress-image">Progress Image</label>
+                        <input type="file" id="progress-image" accept="image/*" required>
+                        <div id="image-preview" class="image-preview"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="progress-notes">Notes</label>
+                        <textarea id="progress-notes" rows="3" placeholder="Add notes about your progress"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="progress-goal">Related Goal (Optional)</label>
+                        <select id="progress-goal">
+                            <option value="">Select a goal</option>
+                            <!-- Active goals will be populated here -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" id="cancel-progress">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Progress</button>
                     </div>
                 </form>
             </div>

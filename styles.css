@@ -720,3 +720,163 @@ input::placeholder, textarea::placeholder {
     color: var(--primary-green);
     opacity: 0.5;
 }
+
+/* Calendar Styles */
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.calendar-controls h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    min-width: 200px;
+    text-align: center;
+}
+
+.calendar-grid {
+    background-color: var(--white);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-weight: 500;
+    color: var(--primary-green);
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1rem;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border: 1px solid var(--light-green);
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    position: relative;
+    background-color: var(--white);
+}
+
+.calendar-day:hover {
+    border-color: var(--primary-green);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.calendar-day.other-month {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.calendar-day.today {
+    border-color: var(--primary-green);
+    background-color: var(--light-green);
+}
+
+.calendar-day .date {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.calendar-day .progress-image {
+    width: 100%;
+    height: calc(100% - 1.5rem);
+    object-fit: cover;
+    border-radius: 0.25rem;
+}
+
+.calendar-day .progress-indicator {
+    position: absolute;
+    bottom: 0.25rem;
+    right: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: var(--primary-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 0.7rem;
+}
+
+/* Image Preview */
+.image-preview {
+    margin-top: 1rem;
+    width: 100%;
+    height: 200px;
+    border: 2px dashed var(--light-green);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.image-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.image-preview.drag-over {
+    border-color: var(--primary-green);
+    background-color: var(--light-green);
+}
+
+/* Progress Modal */
+#progress-modal .modal-content {
+    max-width: 600px;
+}
+
+#progress-image {
+    padding: 1rem;
+    border: 2px dashed var(--light-green);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+#progress-image:hover {
+    border-color: var(--primary-green);
+    background-color: var(--light-green);
+}
+
+/* Responsive Calendar */
+@media (max-width: 768px) {
+    .calendar-grid {
+        padding: 1rem;
+    }
+
+    .calendar-header,
+    .calendar-days {
+        gap: 0.5rem;
+    }
+
+    .calendar-day {
+        padding: 0.25rem;
+    }
+
+    .calendar-controls {
+        gap: 1rem;
+    }
+
+    .calendar-controls h2 {
+        font-size: 1.2rem;
+        min-width: 150px;
+    }
+}
