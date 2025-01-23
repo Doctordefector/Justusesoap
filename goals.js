@@ -134,21 +134,71 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             const dateKey = date.toISOString().split('T')[0];
-            if (progressData[dateKey]) {
+            if (progressData[dateKey] && progressData[dateKey].entries.length > 0) {
+                const entries = progressData[dateKey].entries;
+                const lastEntry = entries[entries.length - 1];
+                
                 dayDiv.innerHTML = `
                     <div class="date">${day}</div>
-                    ${progressData[dateKey].image ? 
-                        `<img src="${progressData[dateKey].image}" class="progress-image" alt="Progress">` : 
+                    ${lastEntry.image ? 
+                        `<img src="${lastEntry.image}" class="progress-image" alt="Progress">` : 
                         ''}
-                    ${progressData[dateKey].notes ? 
+                    ${entries.length > 1 ? 
+                        `<div class="progress-indicator">+${entries.length}</div>` : 
+                        entries[0].notes ? 
                         '<div class="progress-indicator"><i class="fas fa-sticky-note"></i></div>' : 
                         ''}
                 `;
+
+                // Show all entries when clicking on a day with multiple entries
+                dayDiv.addEventListener('click', () => {
+                    const entriesHtml = entries.map(entry => `
+                        <div class="progress-entry">
+                            ${entry.image ? `<img src="${entry.image}" alt="Progress">` : ''}
+                            ${entry.notes ? `<p>${entry.notes}</p>` : ''}
+                            ${entry.goalId ? `<p>Related to: ${goals.find(g => g.id === parseInt(entry.goalId))?.title || 'Unknown Goal'}</p>` : ''}
+                            <p class="entry-time">${new Date(entry.timestamp).toLocaleString()}</p>
+                        </div>
+                    `).join('<hr>');
+
+                    const viewEntriesModal = document.createElement('div');
+                    viewEntriesModal.className = 'modal active';
+                    viewEntriesModal.innerHTML = `
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3>Progress Entries for ${date.toLocaleDateString()}</h3>
+                                <button class="close-modal">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="progress-entries">
+                                ${entriesHtml}
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn-primary" onclick="document.getElementById('add-progress').click()">
+                                    <i class="fas fa-plus"></i> Add New Entry
+                                </button>
+                            </div>
+                        </div>
+                    `;
+
+                    document.body.appendChild(viewEntriesModal);
+                    
+                    const closeBtn = viewEntriesModal.querySelector('.close-modal');
+                    closeBtn.addEventListener('click', () => {
+                        document.body.removeChild(viewEntriesModal);
+                    });
+
+                    viewEntriesModal.addEventListener('click', (e) => {
+                        if (e.target === viewEntriesModal) {
+                            document.body.removeChild(viewEntriesModal);
+                        }
+                    });
+                });
             } else {
                 dayDiv.innerHTML = `<div class="date">${day}</div>`;
+                dayDiv.addEventListener('click', () => openProgressModal(date));
             }
-            
-            dayDiv.addEventListener('click', () => openProgressModal(date));
         } else {
             dayDiv.innerHTML = `<div class="date">${day}</div>`;
         }
@@ -186,30 +236,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const dateKey = progressForm.dataset.date;
         const file = progressImage.files[0];
         
+        if (!progressData[dateKey]) {
+            progressData[dateKey] = {
+                entries: []
+            };
+        }
+
+        const newEntry = {
+            id: Date.now(),
+            notes: document.getElementById('progress-notes').value,
+            goalId: progressGoalSelect.value,
+            timestamp: new Date().toISOString()
+        };
+        
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
-                progressData[dateKey] = {
-                    image: e.target.result,
-                    notes: document.getElementById('progress-notes').value,
-                    goalId: progressGoalSelect.value,
-                    timestamp: new Date().toISOString()
-                };
-                
+                newEntry.image = e.target.result;
+                progressData[dateKey].entries.push(newEntry);
                 localStorage.setItem('progressData', JSON.stringify(progressData));
                 closeProgressModal();
                 generateCalendar(currentDate);
             };
             reader.readAsDataURL(file);
-        } else if (progressData[dateKey]?.image) {
-            // Update existing progress without changing the image
-            progressData[dateKey] = {
-                ...progressData[dateKey],
-                notes: document.getElementById('progress-notes').value,
-                goalId: progressGoalSelect.value,
-                timestamp: new Date().toISOString()
-            };
-            
+        } else {
+            progressData[dateKey].entries.push(newEntry);
             localStorage.setItem('progressData', JSON.stringify(progressData));
             closeProgressModal();
             generateCalendar(currentDate);

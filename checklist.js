@@ -2,10 +2,53 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('reminder-modal');
     const addReminderBtn = document.getElementById('add-reminder');
     const cancelBtn = document.getElementById('cancel-reminder');
+    const closeBtn = document.getElementById('close-reminder-modal');
     const form = document.getElementById('reminder-form');
     const tabs = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
     let checklists = JSON.parse(localStorage.getItem('checklists')) || [];
+
+    // Modal handlers
+    function openModal() {
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        // Format dates as YYYY-MM-DD for input fields
+        const formattedToday = today.toISOString().split('T')[0];
+        const formattedTomorrow = tomorrow.toISOString().split('T')[0];
+
+        // Set default dates
+        document.getElementById('start-date').value = formattedToday;
+        document.getElementById('end-date').value = formattedTomorrow;
+
+        modal.style.display = 'flex';
+        modal.classList.add('active');
+        form.reset();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+        modal.classList.remove('active');
+        form.reset();
+        document.body.style.overflow = '';
+    }
+
+    function setDefaultDates() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('start-date').value = today;
+        document.getElementById('end-date').value = today;
+    }
+
+    // Event Listeners
+    addReminderBtn.addEventListener('click', openModal);
+    cancelBtn.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
 
     // Tab switching
     tabs.forEach(tab => {
@@ -19,24 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Modal handlers
-    addReminderBtn.addEventListener('click', () => {
-        modal.style.display = 'block';
-        setDefaultDates();
-    });
-
-    cancelBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-        form.reset();
-    });
-
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-            form.reset();
-        }
-    });
-
     // Form submission
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -48,31 +73,30 @@ document.addEventListener('DOMContentLoaded', () => {
             startDate: document.getElementById('start-date').value,
             endDate: document.getElementById('end-date').value,
             progress: 0,
-            completed: false
+            completed: false,
+            createdAt: new Date().toISOString()
         };
+
+        // Validate dates
+        const start = new Date(newChecklist.startDate);
+        const end = new Date(newChecklist.endDate);
+        
+        if (end < start) {
+            alert('End date cannot be before start date');
+            return;
+        }
+
+        if (newChecklist.frequency <= 0) {
+            alert('Frequency must be greater than 0');
+            return;
+        }
 
         checklists.push(newChecklist);
         localStorage.setItem('checklists', JSON.stringify(checklists));
         
-        modal.style.display = 'none';
-        form.reset();
+        closeModal();
         updateChecklistDisplay();
     });
-
-    function setDefaultDates() {
-        const today = new Date();
-        const tomorrow = new Date(today);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-
-        const todayFormatted = today.toISOString().split('T')[0];
-        const tomorrowFormatted = tomorrow.toISOString().split('T')[0];
-
-        document.getElementById('start-date').value = todayFormatted;
-        document.getElementById('end-date').value = tomorrowFormatted;
-
-        document.getElementById('start-date').min = todayFormatted;
-        document.getElementById('end-date').min = todayFormatted;
-    }
 
     function updateChecklistDisplay() {
         const activeContainer = document.getElementById('checklist-container');
@@ -82,6 +106,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pastContainer) pastContainer.innerHTML = '';
         
         const today = new Date();
+        const activeChecklists = checklists.filter(checklist => !checklist.completed && new Date(checklist.endDate) >= today);
+        const pastChecklists = checklists.filter(checklist => checklist.completed || new Date(checklist.endDate) < today);
+
+        if (activeContainer && activeChecklists.length === 0) {
+            activeContainer.innerHTML = `
+                <div class="empty-message">
+                    <i class="fas fa-clipboard-list"></i>
+                    <p>No active reminders</p>
+                    <button class="btn-primary" onclick="document.getElementById('add-reminder').click()">
+                        <i class="fas fa-plus"></i> Add Your First Reminder
+                    </button>
+                </div>`;
+        }
+
+        if (pastContainer && pastChecklists.length === 0) {
+            pastContainer.innerHTML = `
+                <div class="empty-message">
+                    <i class="fas fa-check-circle"></i>
+                    <p>No completed reminders</p>
+                </div>`;
+        }
         
         checklists.forEach(checklist => {
             const endDate = new Date(checklist.endDate);
@@ -108,12 +153,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 ${!isPast ? `
-                    <button class="delete-btn" onclick="deleteChecklist(${checklist.id})">
+                    <button class="delete-goal" onclick="deleteChecklist(${checklist.id})">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 ` : ''}
             `;
-            
+
             if (!isPast) {
                 const circle = checklistElement.querySelector('.checklist-circle');
                 circle.addEventListener('click', () => {
@@ -137,18 +182,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             container.appendChild(checklistElement);
         });
-
-        // Show empty state messages
-        if (activeContainer && activeContainer.children.length === 0) {
-            activeContainer.innerHTML = '<p class="empty-message">No active checklists</p>';
-        }
-        if (pastContainer && pastContainer.children.length === 0) {
-            pastContainer.innerHTML = '<p class="empty-message">No past checklists</p>';
-        }
     }
 
+    // Delete checklist
     window.deleteChecklist = function(id) {
-        if (confirm('Are you sure you want to delete this checklist?')) {
+        if (confirm('Are you sure you want to delete this reminder?')) {
             checklists = checklists.filter(checklist => checklist.id !== id);
             localStorage.setItem('checklists', JSON.stringify(checklists));
             updateChecklistDisplay();
