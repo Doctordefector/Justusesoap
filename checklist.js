@@ -74,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
             endDate: document.getElementById('end-date').value,
             progress: 0,
             completed: false,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            dailyProgress: {}
         };
 
         // Validate dates
@@ -106,8 +107,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pastContainer) pastContainer.innerHTML = '';
         
         const today = new Date();
-        const activeChecklists = checklists.filter(checklist => !checklist.completed && new Date(checklist.endDate) >= today);
-        const pastChecklists = checklists.filter(checklist => checklist.completed || new Date(checklist.endDate) < today);
+        today.setHours(0, 0, 0, 0);
+
+        const activeChecklists = checklists.filter(checklist => {
+            const endDate = new Date(checklist.endDate);
+            endDate.setHours(0, 0, 0, 0);
+            return !checklist.completed && endDate >= today;
+        });
+
+        const pastChecklists = checklists.filter(checklist => {
+            const endDate = new Date(checklist.endDate);
+            endDate.setHours(0, 0, 0, 0);
+            return checklist.completed || endDate < today;
+        });
 
         if (activeContainer && activeChecklists.length === 0) {
             activeContainer.innerHTML = `
@@ -130,10 +142,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         checklists.forEach(checklist => {
             const endDate = new Date(checklist.endDate);
+            endDate.setHours(0, 0, 0, 0);
             const isPast = endDate < today || checklist.completed;
             const container = isPast ? pastContainer : activeContainer;
             
             if (!container) return;
+
+            // Calculate percentage completed
+            const totalDays = Math.ceil((endDate - new Date(checklist.startDate)) / (1000 * 60 * 60 * 24)) + 1;
+            const completedDays = checklist.dailyProgress ? Object.keys(checklist.dailyProgress).length : 0;
+            const percentageComplete = Math.round((completedDays / totalDays) * 100);
             
             const checklistElement = document.createElement('div');
             checklistElement.className = 'checklist-item';
@@ -149,36 +167,21 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h4>${checklist.task}</h4>
                         <p>${checklist.frequency} times per day</p>
                         <p>From: ${checklist.startDate} To: ${checklist.endDate}</p>
+                        <p>Completion: ${percentageComplete}% of days completed</p>
                         ${isPast ? `<p class="status">${checklist.completed ? 'Completed' : 'Expired'}</p>` : ''}
                     </div>
                 </div>
                 ${!isPast ? `
-                    <button class="delete-goal" onclick="deleteChecklist(${checklist.id})">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                    <div class="checklist-actions">
+                        <button class="update-progress" onclick="updateDailyProgress(${checklist.id})">
+                            <i class="fas fa-check"></i> Mark Today
+                        </button>
+                        <button class="delete-goal" onclick="deleteChecklist(${checklist.id})">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
                 ` : ''}
             `;
-
-            if (!isPast) {
-                const circle = checklistElement.querySelector('.checklist-circle');
-                circle.addEventListener('click', () => {
-                    if (!checklist.completed) {
-                        const increment = 100 / checklist.frequency;
-                        checklist.progress = Math.min(100, checklist.progress + increment);
-                        
-                        if (checklist.progress >= 100) {
-                            checklist.completed = true;
-                            circle.classList.remove('filling');
-                            circle.classList.add('completed');
-                        } else {
-                            circle.style.setProperty('--fill-percent', `${checklist.progress}%`);
-                        }
-                        
-                        localStorage.setItem('checklists', JSON.stringify(checklists));
-                        updateChecklistDisplay();
-                    }
-                });
-            }
             
             container.appendChild(checklistElement);
         });
@@ -191,6 +194,45 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('checklists', JSON.stringify(checklists));
             updateChecklistDisplay();
         }
+    };
+
+    // Add daily progress tracking
+    window.updateDailyProgress = function(id) {
+        const checklist = checklists.find(c => c.id === id);
+        if (!checklist) return;
+
+        const today = new Date().toISOString().split('T')[0];
+        
+        if (!checklist.dailyProgress) {
+            checklist.dailyProgress = {};
+        }
+
+        if (!checklist.dailyProgress[today]) {
+            checklist.dailyProgress[today] = 0;
+        }
+
+        checklist.dailyProgress[today] += 1;
+
+        if (checklist.dailyProgress[today] >= checklist.frequency) {
+            checklist.dailyProgress[today] = checklist.frequency;
+            
+            // Check if all days are completed
+            const endDate = new Date(checklist.endDate);
+            endDate.setHours(0, 0, 0, 0);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (endDate <= today) {
+                checklist.completed = true;
+            }
+        }
+
+        // Update progress percentage
+        const progress = (checklist.dailyProgress[today] / checklist.frequency) * 100;
+        checklist.progress = progress;
+
+        localStorage.setItem('checklists', JSON.stringify(checklists));
+        updateChecklistDisplay();
     };
 
     // Initial display

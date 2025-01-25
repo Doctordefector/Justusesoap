@@ -25,6 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
         weight: '<i class="fas fa-weight-scale"></i>',
         hair: '<i class="fas fa-scissors"></i>',
         skin: '<i class="fas fa-face-smile"></i>',
+        exercise: '<i class="fas fa-dumbbell"></i>',
+        nutrition: '<i class="fas fa-apple-whole"></i>',
+        sleep: '<i class="fas fa-bed"></i>',
+        meditation: '<i class="fas fa-om"></i>',
+        reading: '<i class="fas fa-book"></i>',
+        learning: '<i class="fas fa-graduation-cap"></i>',
         custom: '<i class="fas fa-star"></i>'
     };
 
@@ -33,6 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'flex';
         modal.classList.add('active');
         form.reset();
+        
+        // Set default due date to 30 days from now
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + 30);
+        document.getElementById('due-date').value = dueDate.toISOString().split('T')[0];
+        
         document.body.style.overflow = 'hidden';
     }
 
@@ -88,53 +100,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Calendar functions
-    function generateCalendar(date) {
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
-        const startingDay = firstDay.getDay();
-        const monthLength = lastDay.getDate();
-        
-        calendarMonth.textContent = date.toLocaleDateString('default', { month: 'long', year: 'numeric' });
-        
-        const calendarDays = document.getElementById('calendar-days');
-        calendarDays.innerHTML = '';
-        
-        // Previous month days
-        const prevMonthDays = new Date(year, month, 0).getDate();
-        for (let i = startingDay - 1; i >= 0; i--) {
-            const dayDiv = createDayElement(prevMonthDays - i, true);
-            calendarDays.appendChild(dayDiv);
-        }
-        
-        // Current month days
-        for (let i = 1; i <= monthLength; i++) {
-            const currentDate = new Date(year, month, i);
-            const dayDiv = createDayElement(i, false, currentDate);
-            calendarDays.appendChild(dayDiv);
-        }
-        
-        // Next month days
-        const remainingDays = 42 - (startingDay + monthLength); // 42 = 6 rows × 7 days
-        for (let i = 1; i <= remainingDays; i++) {
-            const dayDiv = createDayElement(i, true);
-            calendarDays.appendChild(dayDiv);
-        }
-    }
-
     function createDayElement(day, isOtherMonth, date) {
         const dayDiv = document.createElement('div');
         dayDiv.className = `calendar-day${isOtherMonth ? ' other-month' : ''}`;
         
         if (date) {
             const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            date.setHours(0, 0, 0, 0);
+            
             if (date.toDateString() === today.toDateString()) {
                 dayDiv.classList.add('today');
             }
             
             const dateKey = date.toISOString().split('T')[0];
-            if (progressData[dateKey] && progressData[dateKey].entries.length > 0) {
+            if (progressData[dateKey] && progressData[dateKey].entries && progressData[dateKey].entries.length > 0) {
                 const entries = progressData[dateKey].entries;
                 const lastEntry = entries[entries.length - 1];
                 
@@ -204,6 +184,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         return dayDiv;
+    }
+
+    function generateCalendar(date) {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+        const startingDay = firstDay.getDay();
+        const monthLength = lastDay.getDate();
+        
+        calendarMonth.textContent = date.toLocaleDateString('default', { month: 'long', year: 'numeric' });
+        
+        const calendarDays = document.getElementById('calendar-days');
+        calendarDays.innerHTML = '';
+        
+        // Previous month days
+        const prevMonthLastDay = new Date(year, month, 0);
+        const prevMonthDays = prevMonthLastDay.getDate();
+        for (let i = startingDay - 1; i >= 0; i--) {
+            const dayNumber = prevMonthDays - i;
+            const dayDate = new Date(year, month - 1, dayNumber);
+            const dayDiv = createDayElement(dayNumber, true, dayDate);
+            calendarDays.appendChild(dayDiv);
+        }
+        
+        // Current month days
+        for (let i = 1; i <= monthLength; i++) {
+            const currentDate = new Date(year, month, i);
+            const dayDiv = createDayElement(i, false, currentDate);
+            calendarDays.appendChild(dayDiv);
+        }
+        
+        // Next month days
+        const remainingDays = 42 - (startingDay + monthLength); // 42 = 6 rows × 7 days
+        for (let i = 1; i <= remainingDays; i++) {
+            const dayDate = new Date(year, month + 1, i);
+            const dayDiv = createDayElement(i, true, dayDate);
+            calendarDays.appendChild(dayDiv);
+        }
     }
 
     // Calendar navigation
@@ -298,20 +317,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         goals.forEach(goal => {
-            const isCompleted = goal.currentValue >= goal.targetValue;
-            const container = isCompleted ? pastContainer : currentContainer;
-            
+            const container = goal.completed ? pastContainer : currentContainer;
             if (!container) return;
 
             const progress = calculateProgress(goal.currentValue, goal.targetValue);
+            const dueDate = new Date(goal.dueDate);
+            const isOverdue = !goal.completed && dueDate < new Date();
+            
             const goalElement = document.createElement('div');
-            goalElement.className = `goal-card ${isCompleted ? 'completed' : ''}`;
+            goalElement.className = `goal-card ${goal.completed ? 'completed' : ''} ${isOverdue ? 'overdue' : ''}`;
             
             goalElement.innerHTML = `
                 <div class="goal-header">
-                    <div class="goal-icon ${isCompleted ? 'completed' : ''}">
+                    <div class="goal-icon ${goal.completed ? 'completed' : ''}">
                         ${goalIcons[goal.type] || goalIcons.custom}
-                        ${isCompleted ? '<i class="fas fa-check check-mark"></i>' : ''}
+                        ${goal.completed ? '<i class="fas fa-check check-mark"></i>' : ''}
                     </div>
                     <div class="goal-type">${goal.type}</div>
                     <button class="delete-goal" onclick="deleteGoal(${goal.id})">
@@ -329,7 +349,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
                 ${goal.notes ? `<div class="goal-notes">${goal.notes}</div>` : ''}
-                ${!isCompleted ? `
+                <div class="goal-dates">
+                    <span>Started: ${new Date(goal.startDate).toLocaleDateString()}</span>
+                    ${goal.completed ? 
+                        `<span>Completed: ${new Date(goal.completedAt).toLocaleDateString()}</span>` :
+                        `<span class="${isOverdue ? 'overdue' : ''}">Due: ${dueDate.toLocaleDateString()}</span>`
+                    }
+                </div>
+                ${!goal.completed ? `
                     <button class="update-value" onclick="updateGoalValue(${goal.id})">
                         <i class="fas fa-edit"></i> Update Progress
                     </button>
@@ -353,17 +380,26 @@ document.addEventListener('DOMContentLoaded', () => {
             unit: document.getElementById('unit').value,
             notes: document.getElementById('notes').value || '',
             completed: false,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            dueDate: document.getElementById('due-date').value,
+            completedAt: null,
+            startDate: new Date().toISOString().split('T')[0]
         };
 
         // Validate input
-        if (newGoal.currentValue > newGoal.targetValue) {
-            alert('Current value cannot be greater than target value');
+        if (newGoal.currentValue >= newGoal.targetValue) {
+            alert('Current value must be lower than target value');
             return;
         }
 
         if (newGoal.currentValue < 0 || newGoal.targetValue < 0) {
             alert('Values cannot be negative');
+            return;
+        }
+
+        const dueDate = new Date(newGoal.dueDate);
+        if (dueDate < new Date()) {
+            alert('Due date cannot be in the past');
             return;
         }
 
@@ -393,18 +429,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        if (parsedValue > goal.targetValue) {
-            alert('Current value cannot be greater than target value');
-            return;
-        }
-
-        goal.currentValue = parsedValue;
-        
-        if (goal.currentValue >= goal.targetValue) {
+        if (parsedValue >= goal.targetValue && !goal.completed) {
             goal.completed = true;
+            goal.completedAt = new Date().toISOString();
             alert("Congratulations! You've achieved your goal!");
         }
 
+        goal.currentValue = parsedValue;
         localStorage.setItem('persistentGoals', JSON.stringify(goals));
         displayGoals();
     };
